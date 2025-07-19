@@ -1,0 +1,107 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>音乐播放按钮</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://cdn.jsdelivr.net/npm/font-awesome@4.7.0/css/font-awesome.min.css" rel="stylesheet">
+    
+    <!-- 配置Tailwind自定义颜色和字体 -->
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        gray30: 'rgba(128, 128, 128, 0.3)', // 30%纯灰色
+                        buttonBlack: '#000000',          // 按钮黑色
+                    },
+                    fontFamily: {
+                        heiti: ['SimHei', '黑体', 'sans-serif'], // 黑体字体
+                    },
+                }
+            }
+        }
+    </script>
+    
+    <style type="text/tailwindcss">
+        @layer utilities {
+            .button-style {
+                @apply bg-buttonBlack text-white font-heiti rounded-full py-3 px-8 
+                       hover:bg-gray-700 transition-colors duration-300 
+                       focus:outline-none focus:ring-2 focus:ring-white focus:ring-opacity-50;
+            }
+            .audio-hidden {
+                @apply hidden;
+            }
+        }
+    </style>
+</head>
+<body class="bg-gray30 min-h-screen flex items-center justify-center p-4">
+    <div class="flex flex-col md:flex-row gap-6 items-center justify-center w-full max-w-2xl">
+        <!-- 按钮1和对应的音频元素 -->
+        <button id="btn1" class="button-style text-xl">
+            No.1
+        </button>
+        <audio id="audio1" loop>
+            <!-- 这里替换为您的第一首乐曲URL -->
+            <source src="music1.mp3" type="audio/mpeg">
+            您的浏览器不支持音频播放
+        </audio>
+         
+         <!-- 按钮2和对应的音频元素 -->
+         <button id="btn2" class="button-style text-xl">
+             No.2
+         </button>
+         <audio id="audio2" loop>
+             <!-- 这里替换为您的第二首乐曲URL -->
+             <source src="music2.mp3" type="audio/mpeg">
+             您的浏览器不支持音频播放
+         </audio>
+          
+          <!-- 按钮3和对应的音频元素 -->
+          <button id="btn3" class="button-style text-xl">
+              No.3
+          </button>
+          <audio id="audio3" loop>
+              <!-- 这里替换为您的第三首乐曲URL -->
+              <source src="music3.mp3" type="audio/mpeg">
+              您的浏览器不支持音频播放
+          </audio>
+    </div>
+
+    <script>
+        // 获取按钮和音频元素
+        const btn1 = document.getElementById('btn1');
+        const btn2 = document.getElementById('btn2');
+        const btn3 = document.getElementById('btn3');
+        const audio1 = document.getElementById('audio1');
+        const audio2 = document.getElementById('audio2');
+        const audio3 = document.getElementById('audio3');
+        
+        // 按钮点击事件处理函数
+        function toggleAudio(button, audio, others) {
+            button.addEventListener('click', () => {
+                // 暂停其他音频
+                others.forEach(otherAudio => {
+                    otherAudio.pause();
+                });
+                
+                // 切换当前音频的播放状态
+                if (audio.paused) {
+                    audio.play();
+                    button.classList.add('ring-2', 'ring-white');
+                } else {
+                    audio.pause();
+                    button.classList.remove('ring-2', 'ring-white');
+                }
+            });
+        }
+        
+        // 为每个按钮绑定事件
+        toggleAudio(btn1, audio1, [audio2, audio3]);
+        toggleAudio(btn2, audio2, [audio1, audio3]);
+        toggleAudio(btn3, audio3, [audio1, audio2]);
+    </script>
+</body>
+</html>
